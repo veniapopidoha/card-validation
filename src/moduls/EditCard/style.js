@@ -7,7 +7,7 @@ export const Wrap = styled.div`
   width: 85%;
   position: fixed;
   bottom: 0;
-  padding: 40px 30px;
+  padding: 30px;
   border-radius: 24px 24px 0 0;
   animation-iteration-count: 1;
   animation-duration: 1s;
@@ -15,7 +15,7 @@ export const Wrap = styled.div`
   animation-fill-mode: forwards;
   @keyframes slidegdz {
     0% { height: 10%; }
-    100% { height: 90%; }
+    100% { height: 95%; }
   }
 `;
 

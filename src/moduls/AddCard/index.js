@@ -60,7 +60,12 @@ export const AddCard = () => {
 
     if (temp === '') {
       setNumberError('Please fill your card number');
-    } else if (/[a-z]/.test(temp) || temp.length !== 19) {
+    } else if (
+      /[a-z]/.test(temp) ||
+      temp.length !== 19 ||
+      /[0-3]/.test(temp[0]) ||
+      /[6-9]/.test(temp[0])
+    ) {
       setNumberError('Please enter a valid number of card');
     } else {
       setNumberError('');
@@ -79,7 +84,11 @@ export const AddCard = () => {
 
     if (temp === '') {
       setDateError('Please fill your expiry date');
-    } else if (temp.length < 5) {
+    } else if (
+      temp.length < 5 ||
+      temp[0] + temp[1] > 12 ||
+      temp[3] + temp[4] < 22
+    ) {
       setDateError('Please enter a valid expiry date');
     } else {
       setDateError('');
@@ -179,7 +188,9 @@ export const AddCard = () => {
           empty={cvvEmpty}
         />
         {cvvEmpty && cvvError && <Error>{cvvError}</Error>}
-        <Confirm disabled={!formValid} type='submit'>Confirm</Confirm>
+        <Confirm disabled={!formValid} type='submit'>
+          Confirm
+        </Confirm>
       </form>
     </Wrap>
   );

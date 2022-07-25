@@ -17,12 +17,10 @@ export const EditCard = () => {
   const [dateEmpty, setDateEmpty] = useState(false);
   const [numberEmpty, setNumberEmpty] = useState(false);
   const [cvvEmpty, setCvvEmpty] = useState(false);
-  const [nameError, setNameError] = useState('Please fill your name');
-  const [numberError, setNumberError] = useState(
-    'Please fill your card number'
-  );
-  const [dateError, setDateError] = useState('Please fill your date');
-  const [cvvError, setCvvError] = useState('Please fill your cvv');
+  const [nameError, setNameError] = useState('');
+  const [numberError, setNumberError] = useState('');
+  const [dateError, setDateError] = useState('');
+  const [cvvError, setCvvError] = useState('');
   const [formValid, setFormValid] = useState(false);
 
   const allCard = useSelector((state) => state.card);
@@ -35,7 +33,6 @@ export const EditCard = () => {
   const deleteCard = () => {
     dispatch({ type: 'DELETE_CARD', payload: {} });
     dispatch({ type: 'SET_IS_EDIT', payload: false });
-
   };
 
   useEffect(() => {
@@ -48,16 +45,16 @@ export const EditCard = () => {
   const editCardInfo = (e) => {
     e.preventDefault();
     const card = { name, number, date, cvv };
-    dispatch({ type: 'EDIT_CARD_INFO', payload: card});
+    dispatch({ type: 'EDIT_CARD_INFO', payload: card });
     dispatch({ type: 'SET_IS_EDIT', payload: false });
   };
 
   const handleName = (e) => {
     let temp = e.target.value.replace(/[0-9]/g, '');
 
-    if (temp === '') {
+    if (/[0-9]/.test(temp)) {
       setNameError('Please fill your name');
-    } else if (/[0-9]/.test(temp)) {
+    } else if (temp === 0) {
       setNameError('Please enter a valid name');
     } else {
       setNameError('');
@@ -72,10 +69,16 @@ export const EditCard = () => {
     if (/[0-9]{4}/.test(temp.slice(-4)) && temp.length < 19) {
       temp += ' ';
     }
+    console.log('temp[0] - ', temp[0]);
 
     if (temp === '') {
       setNumberError('Please fill your card number');
-    } else if (/[a-z]/.test(temp) || temp.length !== 19) {
+    } else if (
+      /[a-z]/.test(temp) ||
+      temp.length !== 19 ||
+      /[0-3]/.test(temp[0]) ||
+      /[6-9]/.test(temp[0])
+    ) {
       setNumberError('Please enter a valid number of card');
     } else {
       setNumberError('');
@@ -94,7 +97,11 @@ export const EditCard = () => {
 
     if (temp === '') {
       setDateError('Please fill your expiry date');
-    } else if (temp.length < 5) {
+    } else if (
+      temp.length < 5 ||
+      temp[0] + temp[1] > 12 ||
+      temp[3] + temp[4] < 22
+    ) {
       setDateError('Please enter a valid expiry date');
     } else {
       setDateError('');
@@ -141,8 +148,6 @@ export const EditCard = () => {
     }
   }, [nameError, numberError, dateError, cvvError]);
 
-  
-
   return (
     <Wrap>
       <Close onClick={addCard}>x</Close>
@@ -153,7 +158,7 @@ export const EditCard = () => {
         <Input
           name='name'
           value={name}
-          onChange={(handleName)}
+          onChange={handleName}
           onBlur={(e) => blurHandler(e)}
           error={nameError}
           empty={nameEmpty}
@@ -167,6 +172,7 @@ export const EditCard = () => {
           onBlur={(e) => blurHandler(e)}
           error={numberError}
           empty={numberEmpty}
+          maxLength={19}
         />
         {numberEmpty && numberError && <Error>{numberError}</Error>}
         <InputTitle>Expiry date</InputTitle>
@@ -177,6 +183,7 @@ export const EditCard = () => {
           onBlur={(e) => blurHandler(e)}
           error={dateError}
           empty={dateEmpty}
+          maxLength={5}
         />
         {dateEmpty && dateError && <Error>{dateError}</Error>}
         <InputTitle>CVV(Security code)</InputTitle>
@@ -187,9 +194,12 @@ export const EditCard = () => {
           onBlur={(e) => blurHandler(e)}
           error={cvvError}
           empty={cvvEmpty}
+          maxLength={3}
         />
         {cvvEmpty && cvvError && <Error>{cvvError}</Error>}
-        <Confirm type='submit'>Confirm</Confirm>
+        <Confirm disabled={!formValid} type='submit'>
+          Confirm
+        </Confirm>
       </form>
       <Delete onClick={deleteCard}>Delete card</Delete>
     </Wrap>

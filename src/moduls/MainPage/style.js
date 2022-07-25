@@ -7,6 +7,7 @@ export const Wrap = styled.div`
   background-color:  #E5E5E5;
   flex-direction: column;
   align-items: center;
+
 `;
 
 export const Title = styled.h1`
@@ -30,4 +31,11 @@ export const Button = styled.button`
   border-radius: 24px;
   position: absolute;
   bottom: 50px;
+`;
+
+export const CardWrap = styled.div`
+  overflow: scroll;
+  width: 95%;
+  max-width: 450px;
+  height: 450px;
 `;

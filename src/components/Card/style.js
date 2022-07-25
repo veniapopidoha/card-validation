@@ -11,6 +11,9 @@ export const Wrap = styled.div`
   padding: 15px;
   width: 95%;
   margin-bottom: 10px;
+  max-width: 400px;
+  min-height: 150px;
+  max-height: 200px;
 `;
 
 export const InfoBlock = styled.div`
@@ -40,7 +43,7 @@ export const RowEnd = styled.div`
 
 export const RowStart = styled(RowEnd)`
   justify-content: flex-start;
-  margin-top: 50px;
+  margin-top: -10px;
 `;
 
 export const CardInfo = styled(InfoBlock)`
@@ -57,6 +60,13 @@ export const Edit = styled.img`
   display: flex;
   position: relative;
   left: 90%;
-  top: 53%;
+  top: 30px;
   width: 24px;
+`;
+
+export const BankLogo = styled.img`
+  width: 60px;
+  position: relative;
+  top: -45px;
+  margin-left: 10px;
 `;

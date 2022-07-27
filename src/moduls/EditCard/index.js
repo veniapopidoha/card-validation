@@ -70,7 +70,6 @@ export const EditCard = () => {
     if (/[0-9]{4}/.test(temp.slice(-4)) && temp.length < 19) {
       temp += ' ';
     }
-    console.log('temp[0] - ', temp[0]);
 
     if (temp === '') {
       setNumberError('Please fill your card number');

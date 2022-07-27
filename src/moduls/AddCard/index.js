@@ -1,6 +1,6 @@
 import { Title } from '../../components/Title';
 import { Close, Confirm, Shadow, Wrap } from './style';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input } from '../../components/Input';
 import { InputTitle } from '../../components/InputTitle';
 import { useEffect, useState } from 'react';
@@ -23,6 +23,7 @@ export const AddCard = () => {
   const [dateError, setDateError] = useState('Please fill your date');
   const [cvvError, setCvvError] = useState('Please fill your cvv');
   const [formValid, setFormValid] = useState(false);
+  const allCards = useSelector((state) => state.card);
 
   const addCard = () => {
     dispatch({ type: 'SET_IS_ADD', payload: false });
@@ -33,8 +34,16 @@ export const AddCard = () => {
 
     const card = { name, number, date, cvv };
 
-    dispatch({ type: 'SET_CARD_INFO', payload: card });
-    dispatch({ type: 'SET_IS_ADD', payload: false });
+    const currentCard = allCards.find(
+      (currentCard) => currentCard.number === card.number
+    );
+
+    if (currentCard != undefined) {
+      alert('Така картка існує');
+    } else {
+      dispatch({ type: 'SET_CARD_INFO', payload: card });
+      dispatch({ type: 'SET_IS_ADD', payload: false });
+    }
   };
 
   const handleName = (e) => {
@@ -86,14 +95,15 @@ export const AddCard = () => {
 
     if (temp === '') {
       setDateError('Please fill your expiry date');
-    } else if (temp[3] + temp[4] <= 22 && temp[0] + temp[1] < month) {
-      setDateError('Your card has expired');
     } else if (
       temp.length < 5 ||
-      (temp[0] + temp[1] > 12 && temp[0] + temp[1] <= 0) ||
+      temp[0] + temp[1] > 12 ||
+      temp[0] + temp[1] <= 0 ||
       temp[3] + temp[4] < 22
     ) {
       setDateError('Please enter a valid expiry date');
+    } else if (temp[3] + temp[4] <= 22 && temp[0] + temp[1] < month) {
+      setDateError('Your card has expired');
     } else {
       setDateError('');
     }

@@ -75,6 +75,8 @@ export const AddCard = () => {
 
   const handleDate = (e) => {
     let temp = e.target.value.replace(/[^\d]/g, '');
+    const today = new Date();
+    const month = today.getMonth() + 1;
 
     if (temp.length >= 3) {
       temp = temp.split('');
@@ -84,9 +86,11 @@ export const AddCard = () => {
 
     if (temp === '') {
       setDateError('Please fill your expiry date');
+    } else if (temp[3] + temp[4] <= 22 && temp[0] + temp[1] < month) {
+      setDateError('Your card has expired');
     } else if (
       temp.length < 5 ||
-      temp[0] + temp[1] > 12 ||
+      (temp[0] + temp[1] > 12 && temp[0] + temp[1] <= 0) ||
       temp[3] + temp[4] < 22
     ) {
       setDateError('Please enter a valid expiry date');

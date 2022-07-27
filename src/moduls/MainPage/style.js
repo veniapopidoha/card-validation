@@ -7,7 +7,6 @@ export const Wrap = styled.div`
   background-color:  #E5E5E5;
   flex-direction: column;
   align-items: center;
-
 `;
 
 export const Title = styled.h1`

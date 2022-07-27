@@ -10,7 +10,7 @@ export const MainPage = () => {
 
   const isAdd = useSelector((state) => state.isAdd);
   const isEdit = useSelector((state) => state.isEdit);
-  const allCard = useSelector((state) => state.card);
+  const allCards = useSelector((state) => state.card);
 
   const addCard = () => {
     dispatch({ type: 'SET_IS_ADD', payload: true });
@@ -22,16 +22,17 @@ export const MainPage = () => {
         <Title>Your cards</Title>
         <SubTitle>Add, edit or delete your cards any time</SubTitle>
       </div>
-      <CardWrap>
-        {allCard.map((card = {}, i) => {
-          return (
-            <React.Fragment key={i}>
-              <Card show={true} card={card} i={i} />
-            </React.Fragment>
-          );
-        })}
-      </CardWrap>
-      <Button onClick={addCard}>Add new card</Button>
+      {allCards.map((card = {}, i) => {
+        return (
+          <React.Fragment key={i}>
+            <Card show={true} card={card} i={i} />
+          </React.Fragment>
+        );
+      })}
+
+      <Button allCards={allCards} onClick={addCard}>
+        Add new card
+      </Button>
       {isAdd && <AddCard />}
       {isEdit && <EditCard />}
     </Wrap>

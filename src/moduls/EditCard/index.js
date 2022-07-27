@@ -45,9 +45,19 @@ export const EditCard = () => {
 
   const editCardInfo = (e) => {
     e.preventDefault();
+
     const card = { name, number, date, cvv };
-    dispatch({ type: 'EDIT_CARD_INFO', payload: card });
-    dispatch({ type: 'SET_IS_EDIT', payload: false });
+
+    const currentCard = allCard.find(
+      (currentCard) => currentCard.number === card.number
+    );
+
+    if (currentCard != undefined) {
+      alert('Така картка існує');
+    } else {
+      dispatch({ type: 'EDIT_CARD_INFO', payload: card });
+      dispatch({ type: 'SET_IS_EDIT', payload: false });
+    }
   };
 
   const handleName = (e) => {

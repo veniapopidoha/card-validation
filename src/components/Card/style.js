@@ -43,7 +43,7 @@ export const RowEnd = styled.div`
 
 export const RowStart = styled(RowEnd)`
   justify-content: flex-start;
-  margin-top: -10px;
+  margin-top: -30px;
 `;
 
 export const CardInfo = styled(InfoBlock)`
@@ -60,7 +60,7 @@ export const Edit = styled.img`
   display: flex;
   position: relative;
   left: 90%;
-  top: 30px;
+  top: 20px;
   width: 24px;
 `;
 

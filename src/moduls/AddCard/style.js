@@ -4,18 +4,18 @@ export const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  width: 85%;
+  width: 500px;
   position: fixed;
   bottom: 0;
   padding: 40px 30px;
   border-radius: 24px 24px 0 0;
   animation-iteration-count: 1;
   animation-duration: 1s;
-  animation-name: slidegdz;
+  animation-name: slide;
   animation-fill-mode: forwards;
-  @keyframes slidegdz {
+  @keyframes slide {
     0% { height: 10%; }
-    100% { height: 70%; }
+    100% { height: 70vh; }
   }
 `;
 
@@ -41,4 +41,13 @@ export const Confirm = styled.button`
   border-radius: 24px;
   margin-top: 50px;
   width: 100%;
+`;
+
+export const Shadow = styled.div`
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
 `;

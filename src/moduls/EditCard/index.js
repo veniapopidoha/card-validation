@@ -6,6 +6,7 @@ import { InputTitle } from '../../components/InputTitle';
 import { Card } from '../../components/Card';
 import { useEffect, useState } from 'react';
 import { Error } from '../../components/Error';
+import { Shadow } from '../AddCard/style';
 
 export const EditCard = () => {
   const dispatch = useDispatch();
@@ -53,9 +54,9 @@ export const EditCard = () => {
     let temp = e.target.value.replace(/[0-9]/g, '');
 
     if (/[0-9]/.test(temp)) {
-      setNameError('Please fill your name');
-    } else if (temp === 0) {
       setNameError('Please enter a valid name');
+    } else if (temp.length === 0) {
+      setNameError('Please fill your name');
     } else {
       setNameError('');
     }
@@ -153,59 +154,61 @@ export const EditCard = () => {
   }, [nameError, numberError, dateError, cvvError]);
 
   return (
-    <Wrap>
-      <Close onClick={addCard}>x</Close>
-      <Title>Edit your Card</Title>
-      <Card show={false} card={allCard[cardIndex]} i={cardIndex} />
-      <form onSubmit={editCardInfo}>
-        <InputTitle>Name in card</InputTitle>
-        <Input
-          name='name'
-          value={name}
-          onChange={handleName}
-          onBlur={(e) => blurHandler(e)}
-          error={nameError}
-          empty={nameEmpty}
-        />
-        {nameEmpty && nameError && <Error>{nameError}</Error>}
-        <InputTitle>Card number</InputTitle>
-        <Input
-          name='number'
-          value={number}
-          onChange={handleCreditCard}
-          onBlur={(e) => blurHandler(e)}
-          error={numberError}
-          empty={numberEmpty}
-          maxLength={19}
-        />
-        {numberEmpty && numberError && <Error>{numberError}</Error>}
-        <InputTitle>Expiry date</InputTitle>
-        <Input
-          name='date'
-          value={date}
-          onChange={handleDate}
-          onBlur={(e) => blurHandler(e)}
-          error={dateError}
-          empty={dateEmpty}
-          maxLength={5}
-        />
-        {dateEmpty && dateError && <Error>{dateError}</Error>}
-        <InputTitle>CVV(Security code)</InputTitle>
-        <Input
-          name='cvv'
-          value={cvv}
-          onChange={handleCvv}
-          onBlur={(e) => blurHandler(e)}
-          error={cvvError}
-          empty={cvvEmpty}
-          maxLength={3}
-        />
-        {cvvEmpty && cvvError && <Error>{cvvError}</Error>}
-        <Confirm disabled={!formValid} type='submit'>
-          Confirm
-        </Confirm>
-      </form>
-      <Delete onClick={deleteCard}>Delete card</Delete>
-    </Wrap>
+    <Shadow>
+      <Wrap>
+        <Close onClick={addCard}>x</Close>
+        <Title>Edit your Card</Title>
+        <Card show={false} card={allCard[cardIndex]} i={cardIndex} />
+        <form onSubmit={editCardInfo}>
+          <InputTitle>Name in card</InputTitle>
+          <Input
+            name='name'
+            value={name}
+            onChange={handleName}
+            onBlur={(e) => blurHandler(e)}
+            error={nameError}
+            empty={nameEmpty}
+          />
+          {nameEmpty && nameError && <Error>{nameError}</Error>}
+          <InputTitle>Card number</InputTitle>
+          <Input
+            name='number'
+            value={number}
+            onChange={handleCreditCard}
+            onBlur={(e) => blurHandler(e)}
+            error={numberError}
+            empty={numberEmpty}
+            maxLength={19}
+          />
+          {numberEmpty && numberError && <Error>{numberError}</Error>}
+          <InputTitle>Expiry date</InputTitle>
+          <Input
+            name='date'
+            value={date}
+            onChange={handleDate}
+            onBlur={(e) => blurHandler(e)}
+            error={dateError}
+            empty={dateEmpty}
+            maxLength={5}
+          />
+          {dateEmpty && dateError && <Error>{dateError}</Error>}
+          <InputTitle>CVV(Security code)</InputTitle>
+          <Input
+            name='cvv'
+            value={cvv}
+            onChange={handleCvv}
+            onBlur={(e) => blurHandler(e)}
+            error={cvvError}
+            empty={cvvEmpty}
+            maxLength={3}
+          />
+          {cvvEmpty && cvvError && <Error>{cvvError}</Error>}
+          <Confirm disabled={!formValid} type='submit'>
+            Confirm
+          </Confirm>
+        </form>
+        <Delete onClick={deleteCard}>Delete card</Delete>
+      </Wrap>
+    </Shadow>
   );
 };

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const Wrap = styled.div`
-  padding: 20px;
   height: 96vh;
   display: flex;
   background-color:  #E5E5E5;
@@ -22,7 +21,7 @@ export const SubTitle = styled.h3`
 export const Button = styled.button`
   color: #fff;
   padding: 15px;
-  width: 90%;
+  width: 500px;
   font-size: 20px;
   font-weight: 700;
   background-color: #4C00C2;

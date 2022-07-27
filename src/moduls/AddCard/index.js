@@ -1,5 +1,5 @@
 import { Title } from '../../components/Title';
-import { Close, Confirm, Wrap } from './style';
+import { Close, Confirm, Shadow, Wrap } from './style';
 import { useDispatch } from 'react-redux';
 import { Input } from '../../components/Input';
 import { InputTitle } from '../../components/InputTitle';
@@ -140,62 +140,64 @@ export const AddCard = () => {
   }, [nameError, numberError, dateError, cvvError]);
 
   return (
-    <Wrap>
-      <Close onClick={addCard}>x</Close>
-      <Title>Add your card details</Title>
-      <form onSubmit={setCardData}>
-        <InputTitle>Name in card</InputTitle>
-        <Input
-          type='text'
-          onBlur={(e) => blurHandler(e)}
-          onChange={handleName}
-          name='name'
-          placeholder='Venia Popidoha'
-          value={name}
-          error={nameError}
-          empty={nameEmpty}
-        />
-        {nameEmpty && nameError && <Error>{nameError}</Error>}
-        <InputTitle>Card number</InputTitle>
-        <Input
-          onBlur={(e) => blurHandler(e)}
-          onChange={handleCreditCard}
-          name='number'
-          maxLength='19'
-          placeholder='0000 0000 0000 0000'
-          value={number}
-          error={numberError}
-          empty={numberEmpty}
-        />
-        {numberEmpty && numberError && <Error>{numberError}</Error>}
-        <InputTitle>Expiry date</InputTitle>
-        <Input
-          onBlur={(e) => blurHandler(e)}
-          onChange={handleDate}
-          maxLength='5'
-          name='date'
-          placeholder='00/00'
-          value={date}
-          error={dateError}
-          empty={dateEmpty}
-        />
-        {dateEmpty && dateError && <Error>{dateError}</Error>}
-        <InputTitle>CVV(Security code)</InputTitle>
-        <Input
-          onBlur={(e) => blurHandler(e)}
-          onChange={handleCvv}
-          maxLength='3'
-          name='cvv'
-          placeholder='000'
-          value={cvv}
-          error={cvvError}
-          empty={cvvEmpty}
-        />
-        {cvvEmpty && cvvError && <Error>{cvvError}</Error>}
-        <Confirm disabled={!formValid} type='submit'>
-          Confirm
-        </Confirm>
-      </form>
-    </Wrap>
+    <Shadow>
+      <Wrap>
+        <Close onClick={addCard}>x</Close>
+        <Title>Add your card details</Title>
+        <form onSubmit={setCardData}>
+          <InputTitle>Name in card</InputTitle>
+          <Input
+            type='text'
+            onBlur={(e) => blurHandler(e)}
+            onChange={handleName}
+            name='name'
+            placeholder='Venia Popidoha'
+            value={name}
+            error={nameError}
+            empty={nameEmpty}
+          />
+          {nameEmpty && nameError && <Error>{nameError}</Error>}
+          <InputTitle>Card number</InputTitle>
+          <Input
+            onBlur={(e) => blurHandler(e)}
+            onChange={handleCreditCard}
+            name='number'
+            maxLength='19'
+            placeholder='0000 0000 0000 0000'
+            value={number}
+            error={numberError}
+            empty={numberEmpty}
+          />
+          {numberEmpty && numberError && <Error>{numberError}</Error>}
+          <InputTitle>Expiry date</InputTitle>
+          <Input
+            onBlur={(e) => blurHandler(e)}
+            onChange={handleDate}
+            maxLength='5'
+            name='date'
+            placeholder='00/00'
+            value={date}
+            error={dateError}
+            empty={dateEmpty}
+          />
+          {dateEmpty && dateError && <Error>{dateError}</Error>}
+          <InputTitle>CVV(Security code)</InputTitle>
+          <Input
+            onBlur={(e) => blurHandler(e)}
+            onChange={handleCvv}
+            maxLength='3'
+            name='cvv'
+            placeholder='000'
+            value={cvv}
+            error={cvvError}
+            empty={cvvEmpty}
+          />
+          {cvvEmpty && cvvError && <Error>{cvvError}</Error>}
+          <Confirm disabled={!formValid} type='submit'>
+            Confirm
+          </Confirm>
+        </form>
+      </Wrap>
+    </Shadow>
   );
 };

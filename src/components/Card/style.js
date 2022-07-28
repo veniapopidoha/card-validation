@@ -12,7 +12,6 @@ export const Wrap = styled.div`
   width: 95%;
   margin-bottom: 10px;
   max-width: 400px;
-  min-height: 150px;
   max-height: 200px;
 `;
 

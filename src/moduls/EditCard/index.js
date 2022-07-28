@@ -34,7 +34,7 @@ export const EditCard = () => {
   const deleteCard = () => {
     dispatch({ type: 'DELETE_CARD', payload: {} });
     dispatch({ type: 'SET_IS_EDIT', payload: false });
-    console.log("all - ", allCard)
+    console.log('all - ', allCard);
   };
 
   useEffect(() => {
@@ -52,9 +52,14 @@ export const EditCard = () => {
     const currentCard = allCard.find(
       (currentCard) => currentCard.number === card.number
     );
-
-    if (currentCard != undefined) {
-      alert('Така картка існує');
+    
+    if (currentCard !== undefined) {
+      if (currentCard.number === allCard[cardIndex].number) {
+        dispatch({ type: 'EDIT_CARD_INFO', payload: card });
+        dispatch({ type: 'SET_IS_EDIT', payload: false });
+      } else {
+        alert('Така картка існує');
+      }
     } else {
       dispatch({ type: 'EDIT_CARD_INFO', payload: card });
       dispatch({ type: 'SET_IS_EDIT', payload: false });

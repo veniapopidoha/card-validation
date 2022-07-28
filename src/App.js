@@ -23,8 +23,7 @@ function App() {
       case 'DELETE_CARD':
         return {
           ...state,
-          allCards: delete state.card[state.cardIndex],
-          
+          allCards: state.card.splice(state.cardIndex, 1),          
         };
       case 'EDIT_CARD_INFO':
         return {
@@ -40,6 +39,7 @@ function App() {
         return state;
     }
   };
+
 
   const store = createStore(reducer);
   return (

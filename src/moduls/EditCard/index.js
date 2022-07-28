@@ -34,6 +34,7 @@ export const EditCard = () => {
   const deleteCard = () => {
     dispatch({ type: 'DELETE_CARD', payload: {} });
     dispatch({ type: 'SET_IS_EDIT', payload: false });
+    console.log("all - ", allCard)
   };
 
   useEffect(() => {

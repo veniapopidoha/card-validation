@@ -34,7 +34,6 @@ export const EditCard = () => {
   const deleteCard = () => {
     dispatch({ type: 'DELETE_CARD', payload: {} });
     dispatch({ type: 'SET_IS_EDIT', payload: false });
-    console.log('all - ', allCard);
   };
 
   useEffect(() => {
@@ -52,24 +51,15 @@ export const EditCard = () => {
     const currentCard = allCard.find(
       (currentCard) => currentCard.number === card.number
     );
-    
-    if (currentCard !== undefined) {
-      if (currentCard.number === allCard[cardIndex].number) {
-        dispatch({ type: 'EDIT_CARD_INFO', payload: card });
-        dispatch({ type: 'SET_IS_EDIT', payload: false });
-      } else {
-        alert('Така картка існує');
-      }
-    } else {
-      dispatch({ type: 'EDIT_CARD_INFO', payload: card });
-      dispatch({ type: 'SET_IS_EDIT', payload: false });
-    }
+
+    dispatch({ type: 'EDIT_CARD_INFO', payload: card });
+    dispatch({ type: 'SET_IS_EDIT', payload: false });
   };
 
   const handleName = (e) => {
     let temp = e.target.value.replace(/[0-9]/g, '');
 
-    if (/[0-9]/.test(temp)) {
+    if (/[0-9]/.test(temp) || temp.indexOf(' ') === 0) {
       setNameError('Please enter a valid name');
     } else if (temp.length === 0) {
       setNameError('Please fill your name');
@@ -83,14 +73,25 @@ export const EditCard = () => {
   const handleCreditCard = (e) => {
     let temp = e.target.value;
 
+    const currentCard = allCard.find(
+      (currentCard) => currentCard.number === temp
+    );
+
     if (/[0-9]{4}/.test(temp.slice(-4)) && temp.length < 19) {
       temp += ' ';
     }
 
-    if (temp === '') {
+    if (currentCard !== undefined) {
+      if (currentCard.number === allCard[cardIndex].number) {
+        setNumberError('');
+      } else {
+        setNumberError('Such a card has been created');
+      }
+    } else if (temp === '') {
       setNumberError('Please fill your card number');
     } else if (
       /[a-z]/.test(temp) ||
+      /[A-Z]/.test(temp) ||
       temp.length !== 19 ||
       /[0-3]/.test(temp[0]) ||
       /[6-9]/.test(temp[0])

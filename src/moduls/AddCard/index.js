@@ -34,22 +34,14 @@ export const AddCard = () => {
 
     const card = { name, number, date, cvv };
 
-    const currentCard = allCards.find(
-      (currentCard) => currentCard.number === card.number
-    );
-
-    if (currentCard != undefined) {
-      alert('Така картка існує');
-    } else {
-      dispatch({ type: 'SET_CARD_INFO', payload: card });
-      dispatch({ type: 'SET_IS_ADD', payload: false });
-    }
+    dispatch({ type: 'SET_CARD_INFO', payload: card });
+    dispatch({ type: 'SET_IS_ADD', payload: false });
   };
 
   const handleName = (e) => {
     let temp = e.target.value.replace(/[0-9]/g, '');
 
-    if (temp === '') {
+    if (temp === '' || temp.indexOf(' ') === 0) {
       setNameError('Please fill your name');
     } else if (/[0-9]/.test(temp)) {
       setNameError('Please enter a valid name');
@@ -63,14 +55,21 @@ export const AddCard = () => {
   const handleCreditCard = (e) => {
     let temp = e.target.value;
 
+    const currentCard = allCards.find(
+      (currentCard) => currentCard.number === temp
+    );
+
     if (/[0-9]{4}/.test(temp.slice(-4)) && temp.length < 19) {
       temp += ' ';
     }
 
-    if (temp === '') {
+    if (currentCard !== undefined) {
+      setNumberError('Such a card has been created');
+    } else if (temp === '') {
       setNumberError('Please fill your card number');
     } else if (
       /[a-z]/.test(temp) ||
+      /[A-Z]/.test(temp) ||
       temp.length !== 19 ||
       /[0-3]/.test(temp[0]) ||
       /[6-9]/.test(temp[0])

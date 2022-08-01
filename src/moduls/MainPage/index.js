@@ -3,7 +3,6 @@ import { Card } from '../../components/Card';
 import { AddCard } from '../AddCard';
 import { Button, CardWrap, SubTitle, Title, Wrap } from './style';
 import { useDispatch, useSelector } from 'react-redux';
-import { EditCard } from '../EditCard';
 
 export const MainPage = () => {
   const dispatch = useDispatch();
@@ -33,8 +32,8 @@ export const MainPage = () => {
       <Button allCards={allCards} onClick={addCard}>
         Add new card
       </Button>
-      {isAdd && <AddCard />}
-      {isEdit && <EditCard />}
+      {isAdd && <AddCard editMode={isEdit}/>}
+      {isEdit && <AddCard editMode={isEdit}/>}
     </Wrap>
   );
 };

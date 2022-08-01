@@ -1,12 +1,9 @@
-import { Title } from '../../components/Title';
-import { Close, Confirm, Shadow, Wrap } from './style';
+import { Close, Confirm, Delete, Error, Input, InputTitle, Shadow, Title, Wrap } from './style';
 import { useDispatch, useSelector } from 'react-redux';
-import { Input } from '../../components/Input';
-import { InputTitle } from '../../components/InputTitle';
 import { useEffect, useState } from 'react';
-import { Error } from '../../components/Error';
+import { Card } from '../../components/Card';
 
-export const AddCard = () => {
+export const AddCard = (props) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -24,9 +21,18 @@ export const AddCard = () => {
   const [cvvError, setCvvError] = useState('Please fill your cvv');
   const [formValid, setFormValid] = useState(false);
   const allCards = useSelector((state) => state.card);
+  const cardIndex = useSelector((state) => state.cardIndex);
+
+  const editMode = props.editMode;
 
   const addCard = () => {
     dispatch({ type: 'SET_IS_ADD', payload: false });
+    dispatch({ type: 'SET_IS_EDIT', payload: false });
+  };
+
+  const deleteCard = () => {
+    dispatch({ type: 'DELETE_CARD', payload: {} });
+    dispatch({ type: 'SET_IS_EDIT', payload: false });
   };
 
   const setCardData = (e) => {
@@ -34,8 +40,13 @@ export const AddCard = () => {
 
     const card = { name, number, date, cvv };
 
-    dispatch({ type: 'SET_CARD_INFO', payload: card });
-    dispatch({ type: 'SET_IS_ADD', payload: false });
+    if (editMode) {
+      dispatch({ type: 'EDIT_CARD_INFO', payload: card });
+      dispatch({ type: 'SET_IS_EDIT', payload: false });
+    } else {
+      dispatch({ type: 'SET_CARD_INFO', payload: card });
+      dispatch({ type: 'SET_IS_ADD', payload: false });
+    }
   };
 
   const handleName = (e) => {
@@ -140,6 +151,20 @@ export const AddCard = () => {
   };
 
   useEffect(() => {
+    if (editMode) {
+      setName(allCards[cardIndex].name);
+      setNumber(allCards[cardIndex].number);
+      setDate(allCards[cardIndex].date);
+      setCvv(allCards[cardIndex].cvv);
+
+      setNameError('');
+      setNumberError('');
+      setDateError('');
+      setCvvError('');
+    }
+  }, []);
+
+  useEffect(() => {
     if (nameError || numberError || dateError || cvvError) {
       setFormValid(false);
     } else {
@@ -151,7 +176,14 @@ export const AddCard = () => {
     <Shadow>
       <Wrap>
         <Close onClick={addCard}>x</Close>
-        <Title>Add your card details</Title>
+        {editMode ? (
+          <Title>Edit your card details</Title>
+        ) : (
+          <Title>Add your card</Title>
+        )}
+        {editMode && (
+          <Card show={false} card={allCards[cardIndex]} i={cardIndex} />
+        )}
         <form onSubmit={setCardData}>
           <InputTitle>Name in card</InputTitle>
           <Input
@@ -205,6 +237,7 @@ export const AddCard = () => {
             Confirm
           </Confirm>
         </form>
+        {editMode && <Delete onClick={deleteCard}>Delete card</Delete>}
       </Wrap>
     </Shadow>
   );

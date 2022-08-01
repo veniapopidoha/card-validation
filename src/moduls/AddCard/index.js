@@ -39,9 +39,9 @@ export const AddCard = () => {
   };
 
   const handleName = (e) => {
-    let temp = e.target.value.replace(/[0-9]/g, '');
+    let temp = e.target.value.trim().replace(/[0-9]/g, '');
 
-    if (temp === '' || temp.indexOf(' ') === 0) {
+    if (temp === '') {
       setNameError('Please fill your name');
     } else if (/[0-9]/.test(temp)) {
       setNameError('Please enter a valid name');
@@ -53,7 +53,7 @@ export const AddCard = () => {
   };
 
   const handleCreditCard = (e) => {
-    let temp = e.target.value;
+    let temp = e.target.value.trim();
 
     const currentCard = allCards.find(
       (currentCard) => currentCard.number === temp
@@ -68,11 +68,10 @@ export const AddCard = () => {
     } else if (temp === '') {
       setNumberError('Please fill your card number');
     } else if (
-      /[a-z]/.test(temp) ||
-      /[A-Z]/.test(temp) ||
-      temp.length !== 19 ||
+      temp.length < 19 ||
       /[0-3]/.test(temp[0]) ||
-      /[6-9]/.test(temp[0])
+      /[6-9]/.test(temp[0]) ||
+      /^[\d ]*$/.test(temp) === false
     ) {
       setNumberError('Please enter a valid number of card');
     } else {

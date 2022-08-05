@@ -1,9 +1,19 @@
-import { Close, Confirm, Delete, Error, Input, InputTitle, Shadow, Title, Wrap } from './style';
+import {
+  Close,
+  Confirm,
+  Delete,
+  Error,
+  Input,
+  InputTitle,
+  Shadow,
+  Title,
+  Wrap,
+} from './style';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Card } from '../../components/Card';
 
-export const AddCard = (props) => {
+export const AddCard = ({ editMode }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -23,15 +33,13 @@ export const AddCard = (props) => {
   const allCards = useSelector((state) => state.card);
   const cardIndex = useSelector((state) => state.cardIndex);
 
-  const editMode = props.editMode;
-
   const addCard = () => {
     dispatch({ type: 'SET_IS_ADD', payload: false });
     dispatch({ type: 'SET_IS_EDIT', payload: false });
   };
 
   const deleteCard = () => {
-    dispatch({ type: 'DELETE_CARD', payload: {} });
+    dispatch({ type: 'DELETE_CARD' });
     dispatch({ type: 'SET_IS_EDIT', payload: false });
   };
 
@@ -64,7 +72,7 @@ export const AddCard = (props) => {
   };
 
   const handleCreditCard = (e) => {
-    let temp = e.target.value.trim();
+    let temp = e.target.value.trim().replace(/\p{L}+/u, '');
 
     const currentCard = allCards.find(
       (currentCard) => currentCard.number === temp
@@ -191,7 +199,7 @@ export const AddCard = (props) => {
             onBlur={(e) => blurHandler(e)}
             onChange={handleName}
             name='name'
-            placeholder='Venia Popidoha'
+            placeholder='Venia'
             value={name}
             error={nameError}
             empty={nameEmpty}

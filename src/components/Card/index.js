@@ -29,10 +29,10 @@ export const Card = (props) => {
   const { cvv = '', number = '', name = '', date = '' } = props.card;
 
   useEffect(() => {
-    if (number[0] == 4) {
+    if (number[0] === 4) {
       setVisa(true);
       setMaster(false)
-    }else if (number[0] == 5) {
+    }else if (number[0] === 5) {
       setVisa(false)
       setMaster(true);
     }

@@ -32,8 +32,8 @@ export const MainPage = () => {
       <Button allCards={allCards} onClick={addCard}>
         Add new card
       </Button>
-      {isAdd && <AddCard editMode={isEdit}/>}
-      {isEdit && <AddCard editMode={isEdit}/>}
+      {isAdd && <AddCard editMode={false}/>}
+      {isEdit && <AddCard editMode={true}/>}
     </Wrap>
   );
 };

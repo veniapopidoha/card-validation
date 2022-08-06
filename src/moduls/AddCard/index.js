@@ -23,19 +23,25 @@ export const AddCard = ({ editMode }) => {
   const [dateEmpty, setDateEmpty] = useState(false);
   const [numberEmpty, setNumberEmpty] = useState(false);
   const [cvvEmpty, setCvvEmpty] = useState(false);
-  const [nameError, setNameError] = useState('Please fill your name');
-  const [numberError, setNumberError] = useState(
-    'Please fill your card number'
-  );
-  const [dateError, setDateError] = useState('Please fill your date');
-  const [cvvError, setCvvError] = useState('Please fill your cvv');
+  const [errors, setErrors] = useState({
+    nameError: 'Please fill your name',
+    numberError: 'Please fill your card number',
+    dateError: 'Please fill your date',
+    cvvError: 'Please fill your cvv',
+  });
+  // const [nameError, setNameError] = useState('Please fill your name');
+  // const [numberError, setNumberError] = useState(
+  //   'Please fill your card number'
+  // );
+  // const [dateError, setDateError] = useState('Please fill your date');
+  // const [cvvError, setCvvError] = useState('Please fill your cvv');
   const [formValid, setFormValid] = useState(false);
   const allCards = useSelector((state) => state.card);
   const cardIndex = useSelector((state) => state.cardIndex);
 
   const addCard = () => {
-    dispatch({ type: 'CLOSE', payload: true});
-    dispatch({ type: 'SET_EDIT', payload: false});
+    dispatch({ type: 'CLOSE', payload: true });
+    dispatch({ type: 'SET_EDIT', payload: false });
   };
 
   const deleteCard = () => {
@@ -61,11 +67,11 @@ export const AddCard = ({ editMode }) => {
     let temp = e.target.value.trim().replace(/[0-9]/g, '');
 
     if (temp === '') {
-      setNameError('Please fill your name');
+      setErrors({ ...errors, nameError: 'Please fill your name' });
     } else if (/[0-9]/.test(temp)) {
-      setNameError('Please enter a valid name');
+      setErrors({ ...errors, nameError: 'Please enter a valid name' });
     } else {
-      setNameError('');
+      setErrors({ ...errors, nameError: '' });
     }
 
     setName(temp);
@@ -83,18 +89,22 @@ export const AddCard = ({ editMode }) => {
     }
 
     if (currentCard !== undefined) {
-      setNumberError('Such a card has been created');
+      if (currentCard.number === allCards[cardIndex].number) {
+        setErrors({ ...errors, numberError: '' });
+      } else {
+        setErrors({ ...errors, numberError: 'Such a card has been created' });
+      }
     } else if (temp === '') {
-      setNumberError('Please fill your card number');
+      setErrors({ ...errors, numberError: 'Please fill your card number' });
     } else if (
       temp.length < 19 ||
       /[0-3]/.test(temp[0]) ||
       /[6-9]/.test(temp[0]) ||
       /^[\d ]*$/.test(temp) === false
     ) {
-      setNumberError('Please enter a valid number of card');
+      setErrors({ ...errors, numberError: 'Please fill your card number' });
     } else {
-      setNumberError('');
+      setErrors({ ...errors, numberError: '' });
     }
     setNumber(temp);
   };
@@ -111,18 +121,18 @@ export const AddCard = ({ editMode }) => {
     }
 
     if (temp === '') {
-      setDateError('Please fill your expiry date');
+      setErrors({ ...errors, dateError: 'Please fill your expiry date' });
     } else if (
       temp.length < 5 ||
       temp[0] + temp[1] > 12 ||
       temp[0] + temp[1] <= 0 ||
       temp[3] + temp[4] < 22
     ) {
-      setDateError('Please enter a valid expiry date');
+      setErrors({ ...errors, dateError: 'Please enter a valid expiry date' });
     } else if (temp[3] + temp[4] <= 22 && temp[0] + temp[1] < month) {
-      setDateError('Your card has expired');
+      setErrors({ ...errors, dateError: 'Your card has expired' });
     } else {
-      setDateError('');
+      setErrors({ ...errors, dateError: '' });
     }
 
     setDate(temp);
@@ -132,11 +142,11 @@ export const AddCard = ({ editMode }) => {
     let temp = e.target.value.replace(/[^\d]/g, '');
 
     if (temp === '') {
-      setCvvError('Please fill your cvv');
+      setErrors({ ...errors, cvvError: 'Please fill your cvv' });
     } else if (temp.length < 3) {
-      setCvvError('Please enter a valid cvv');
+      setErrors({ ...errors, cvvError: 'Please enter a valid cvv' });
     } else {
-      setCvvError('');
+      setErrors({ ...errors, cvvError: '' });
     }
     setCvv(temp);
   };
@@ -165,20 +175,23 @@ export const AddCard = ({ editMode }) => {
       setDate(allCards[cardIndex].date);
       setCvv(allCards[cardIndex].cvv);
 
-      setNameError('');
-      setNumberError('');
-      setDateError('');
-      setCvvError('');
+      setErrors({
+        nameError: '',
+        numberError: '',
+        dateError: '',
+        cvvError: '',
+      });
     }
   }, []);
 
   useEffect(() => {
-    if (nameError || numberError || dateError || cvvError) {
+    if (errors.nameError || errors.numberError || errors.dateError || errors.cvvError) {
       setFormValid(false);
     } else {
       setFormValid(true);
     }
-  }, [nameError, numberError, dateError, cvvError]);
+  }, [errors]);
+  console.log(errors);
 
   return (
     <Shadow>
@@ -201,10 +214,10 @@ export const AddCard = ({ editMode }) => {
             name='name'
             placeholder='Venia'
             value={name}
-            error={nameError}
+            error={errors.nameError}
             empty={nameEmpty}
           />
-          {nameEmpty && nameError && <Error>{nameError}</Error>}
+          {nameEmpty && errors.nameError && <Error>{errors.nameError}</Error>}
           <InputTitle>Card number</InputTitle>
           <Input
             onBlur={(e) => blurHandler(e)}
@@ -213,10 +226,12 @@ export const AddCard = ({ editMode }) => {
             maxLength='19'
             placeholder='0000 0000 0000 0000'
             value={number}
-            error={numberError}
+            error={errors.numberError}
             empty={numberEmpty}
           />
-          {numberEmpty && numberError && <Error>{numberError}</Error>}
+          {numberEmpty && errors.numberError && (
+            <Error>{errors.numberError}</Error>
+          )}
           <InputTitle>Expiry date</InputTitle>
           <Input
             onBlur={(e) => blurHandler(e)}
@@ -225,10 +240,10 @@ export const AddCard = ({ editMode }) => {
             name='date'
             placeholder='00/00'
             value={date}
-            error={dateError}
+            error={errors.dateError}
             empty={dateEmpty}
           />
-          {dateEmpty && dateError && <Error>{dateError}</Error>}
+          {dateEmpty && errors.dateError && <Error>{errors.dateError}</Error>}
           <InputTitle>CVV(Security code)</InputTitle>
           <Input
             onBlur={(e) => blurHandler(e)}
@@ -237,10 +252,10 @@ export const AddCard = ({ editMode }) => {
             name='cvv'
             placeholder='000'
             value={cvv}
-            error={cvvError}
+            error={errors.cvvError}
             empty={cvvEmpty}
           />
-          {cvvEmpty && cvvError && <Error>{cvvError}</Error>}
+          {cvvEmpty && errors.cvvError && <Error>{errors.cvvError}</Error>}
           <Confirm disabled={!formValid} type='submit'>
             Confirm
           </Confirm>

@@ -7,12 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 export const MainPage = () => {
   const dispatch = useDispatch();
 
-  const isAdd = useSelector((state) => state.isAdd);
+  const close = useSelector((state) => state.close);
   const isEdit = useSelector((state) => state.isEdit);
   const allCards = useSelector((state) => state.card);
 
   const addCard = () => {
-    dispatch({ type: 'SET_IS_ADD', payload: true });
+    dispatch({ type: 'CLOSE', payload: false });
   };
 
   return (
@@ -32,7 +32,7 @@ export const MainPage = () => {
       <Button allCards={allCards} onClick={addCard}>
         Add new card
       </Button>
-      {isAdd && <AddCard editMode={false}/>}
+      {!close && <AddCard editMode={false}/>}
       {isEdit && <AddCard editMode={true}/>}
     </Wrap>
   );

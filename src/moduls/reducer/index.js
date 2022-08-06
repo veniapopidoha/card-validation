@@ -1,5 +1,5 @@
 const initialState = {
-  isAdd: false,
+  close: true,
   isEdit: false,
   card: [],
   allCards: [],
@@ -8,9 +8,9 @@ const initialState = {
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_IS_ADD':
-      return { ...state, isAdd: action.payload };
-    case 'SET_IS_EDIT':
+    case 'CLOSE':
+      return { ...state, close: action.payload };
+    case 'SET_EDIT':
       return { ...state, isEdit: action.payload };
     case 'SET_CARD_INDEX':
       return { ...state, cardIndex: action.payload };

@@ -34,13 +34,13 @@ export const AddCard = ({ editMode }) => {
   const cardIndex = useSelector((state) => state.cardIndex);
 
   const addCard = () => {
-    dispatch({ type: 'SET_IS_ADD', payload: false });
-    dispatch({ type: 'SET_IS_EDIT', payload: false });
+    dispatch({ type: 'CLOSE', payload: true});
+    dispatch({ type: 'SET_EDIT', payload: false});
   };
 
   const deleteCard = () => {
     dispatch({ type: 'DELETE_CARD' });
-    dispatch({ type: 'SET_IS_EDIT', payload: false });
+    dispatch({ type: 'SET_EDIT', payload: false });
   };
 
   const setCardData = (e) => {
@@ -50,10 +50,10 @@ export const AddCard = ({ editMode }) => {
 
     if (editMode) {
       dispatch({ type: 'EDIT_CARD_INFO', payload: card });
-      dispatch({ type: 'SET_IS_EDIT', payload: false });
+      dispatch({ type: 'SET_EDIT', payload: false });
     } else {
       dispatch({ type: 'SET_CARD_INFO', payload: card });
-      dispatch({ type: 'SET_IS_ADD', payload: false });
+      dispatch({ type: 'CLOSE', payload: true });
     }
   };
 

@@ -19,7 +19,7 @@ import { useEffect, useState } from 'react';
 export const Card = (props) => {
   const dispatch = useDispatch();
   const editCard = () => {
-    dispatch({ type: 'SET_IS_EDIT', payload: true });
+    dispatch({ type: 'SET_EDIT', payload: true });
     dispatch({ type: 'SET_CARD_INDEX', payload: props.i });
   };
 
@@ -29,10 +29,10 @@ export const Card = (props) => {
   const { cvv = '', number = '', name = '', date = '' } = props.card;
 
   useEffect(() => {
-    if (number[0] === 4) {
+    if (number[0] == 4) {
       setVisa(true);
       setMaster(false)
-    }else if (number[0] === 5) {
+    }else if (number[0] == 5) {
       setVisa(false)
       setMaster(true);
     }

@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 
 export const Card = (props) => {
   const dispatch = useDispatch();
+  const [cardBankName, setCardBankName] = useState('')
   const editCard = () => {
     dispatch({ type: 'SET_EDIT', payload: true });
     dispatch({ type: 'SET_CARD_INDEX', payload: props.i });
@@ -26,15 +27,18 @@ export const Card = (props) => {
   const [visa, setVisa] = useState(false);
   const [master, setMaster] = useState(false);
 
+  const cardBankNameImg = {
+    'visa': visaImg,
+    'master': masterImg
+  }
+
   const { cvv = '', number = '', name = '', date = '' } = props.card;
 
   useEffect(() => {
     if (number[0] == 4) {
-      setVisa(true);
-      setMaster(false)
+      setCardBankName('visa')
     }else if (number[0] == 5) {
-      setVisa(false)
-      setMaster(true);
+      setCardBankName('master')
     }
   }, [number]);
 
@@ -50,8 +54,7 @@ export const Card = (props) => {
           <Code>{date}</Code>
         </InfoBlock>
       </RowEnd>
-      {visa && <BankLogo src={visaImg} />}
-      {master && <BankLogo src={masterImg} />}
+      {cardBankName && (<BankLogo src={cardBankNameImg[cardBankName]} />)}
       {props.show && <Edit src={pencil} onClick={editCard} />}
       <RowStart>
         <CardInfo>

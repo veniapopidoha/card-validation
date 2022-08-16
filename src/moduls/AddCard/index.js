@@ -29,12 +29,6 @@ export const AddCard = ({ editMode }) => {
     dateError: 'Please fill your date',
     cvvError: 'Please fill your cvv',
   });
-  // const [nameError, setNameError] = useState('Please fill your name');
-  // const [numberError, setNumberError] = useState(
-  //   'Please fill your card number'
-  // );
-  // const [dateError, setDateError] = useState('Please fill your date');
-  // const [cvvError, setCvvError] = useState('Please fill your cvv');
   const [formValid, setFormValid] = useState(false);
   const allCards = useSelector((state) => state.card);
   const cardIndex = useSelector((state) => state.cardIndex);
@@ -77,6 +71,24 @@ export const AddCard = ({ editMode }) => {
     setName(temp);
   };
 
+  const searchSpace = (num) => {
+    const string = num.replace(/ /g, '');
+
+    for (let i = 0; i < 16; i++) {
+      if (string[i] === undefined) {
+        setErrors({
+          ...errors,
+          numberError: 'Please enter card without spaces',
+        });
+      } else {
+        setErrors({
+          ...errors,
+          numberError: '',
+        });
+      }
+    }
+  };
+
   const handleCreditCard = (e) => {
     let temp = e.target.value.trim().replace(/\p{L}+/u, '');
 
@@ -90,9 +102,17 @@ export const AddCard = ({ editMode }) => {
 
     if (currentCard !== undefined) {
       if (currentCard.number === allCards[cardIndex].number) {
-        setErrors({ ...errors, numberError: '' });
+        if (editMode) {
+          setErrors({ ...errors, numberError: '' });
+        } else {
+          setErrors({ ...errors, numberError: 'Such a card has been created' });
+        }
       } else {
-        setErrors({ ...errors, numberError: 'Such a card has been created' });
+        if (!editMode) {
+          setErrors({ ...errors, numberError: '' });
+        } else {
+          setErrors({ ...errors, numberError: 'Such a card has been created' });
+        }
       }
     } else if (temp === '') {
       setErrors({ ...errors, numberError: 'Please fill your card number' });
@@ -105,6 +125,7 @@ export const AddCard = ({ editMode }) => {
       setErrors({ ...errors, numberError: 'Please fill your card number' });
     } else {
       setErrors({ ...errors, numberError: '' });
+      searchSpace(temp);
     }
     setNumber(temp);
   };
@@ -165,6 +186,8 @@ export const AddCard = ({ editMode }) => {
       case 'cvv':
         setCvvEmpty(true);
         break;
+      default:
+        break;
     }
   };
 
@@ -185,13 +208,17 @@ export const AddCard = ({ editMode }) => {
   }, []);
 
   useEffect(() => {
-    if (errors.nameError || errors.numberError || errors.dateError || errors.cvvError) {
+    if (
+      errors.nameError ||
+      errors.numberError ||
+      errors.dateError ||
+      errors.cvvError
+    ) {
       setFormValid(false);
     } else {
       setFormValid(true);
     }
   }, [errors]);
-  console.log(errors);
 
   return (
     <Shadow>

@@ -2,7 +2,6 @@ const initialState = {
   close: true,
   isEdit: false,
   card: [],
-  allCards: [],
   cardIndex: 0,
 };
 
@@ -17,17 +16,17 @@ export const reducer = (state = initialState, action) => {
     case 'DELETE_CARD':
       return {
         ...state,
-        allCards: state.card.splice(state.cardIndex, 1),
+        cards: state.card.splice(state.cardIndex, 1),
       };
     case 'EDIT_CARD_INFO':
       return {
         ...state,
-        allCards: state.card.splice(state.cardIndex, 1, action.payload),
+        cards: state.card.splice(state.cardIndex, 1, action.payload),
       };
     case 'SET_CARD_INFO':
       return {
         ...state,
-        allCards: state.card.push(action.payload),
+        cards: state.card.push(action.payload),
       };
     default:
       return state;
